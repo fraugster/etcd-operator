@@ -118,6 +118,7 @@ func (c *Cluster) resize() error {
 }
 
 func (c *Cluster) addOneMember() error {
+	c.logger.Debug("adding one member to cluster")
 	c.status.SetScalingUpCondition(c.members.Size(), c.cluster.Spec.Size)
 
 	cfg := clientv3.Config{

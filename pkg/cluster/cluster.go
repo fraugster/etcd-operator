@@ -222,6 +222,7 @@ func (c *Cluster) run() {
 		case <-c.stopCh:
 			return
 		case event := <-c.eventCh:
+			c.logger.Debugf("received event %v for cluster %v", event.typ, event.cluster)
 			switch event.typ {
 			case eventModifyCluster:
 				err := c.handleUpdateEvent(event)
@@ -404,10 +405,12 @@ func (c *Cluster) removePod(name string) error {
 		if !k8sutil.IsKubernetesResourceNotFoundError(err) {
 			return err
 		}
+		c.logger.Warningf("pod (%s) not found while trying to delete it", name)
 		if c.isDebugLoggerEnabled() {
 			c.debugLogger.LogMessage(fmt.Sprintf("pod (%s) not found while trying to delete it", name))
 		}
 	}
+	c.logger.Info("deleted pod (%s)", name)
 	if c.isDebugLoggerEnabled() {
 		c.debugLogger.LogPodDeletion(name)
 	}

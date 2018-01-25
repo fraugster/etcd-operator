@@ -140,6 +140,12 @@ func (c *Cluster) addOneSelfHostedMember() error {
 	if err != nil {
 		return err
 	}
+
+	podSpec, err := k8sutil.PodSpecToPrettyJSON(pod)
+	if err != nil {
+		c.logger.Warningf("failed to get readable spec for pod(%v): %v", pod.Name, err)
+	}
+	c.logger.Infof("created pod (%s) with spec: %s\n", pod.Name, podSpec)
 	if c.isDebugLoggerEnabled() {
 		c.debugLogger.LogPodCreation(pod)
 	}
@@ -166,6 +172,12 @@ func (c *Cluster) newSelfHostedSeedMember() error {
 	if err != nil {
 		return err
 	}
+
+	podSpec, err := k8sutil.PodSpecToPrettyJSON(pod)
+	if err != nil {
+		c.logger.Warningf("failed to get readable spec for pod(%v): %v", pod.Name, err)
+	}
+	c.logger.Infof("created pod (%s) with spec: %s\n", pod.Name, podSpec)
 	if c.isDebugLoggerEnabled() {
 		c.debugLogger.LogPodCreation(pod)
 	}
@@ -205,6 +217,12 @@ func (c *Cluster) migrateBootMember() error {
 	if err != nil {
 		return err
 	}
+
+	podSpec, err := k8sutil.PodSpecToPrettyJSON(pod)
+	if err != nil {
+		c.logger.Warningf("failed to get readable spec for pod(%v): %v", pod.Name, err)
+	}
+	c.logger.Infof("created pod (%s) with spec: %s\n", pod.Name, podSpec)
 	if c.isDebugLoggerEnabled() {
 		c.debugLogger.LogPodCreation(pod)
 	}
