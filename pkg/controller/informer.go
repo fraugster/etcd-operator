@@ -80,10 +80,12 @@ func (c *Controller) initResource() error {
 }
 
 func (c *Controller) onAddEtcdClus(obj interface{}) {
+	c.logger.Infof("onAddEtcClus: %#v", obj.(*api.EtcdCluster))
 	c.syncEtcdClus(obj.(*api.EtcdCluster))
 }
 
 func (c *Controller) onUpdateEtcdClus(oldObj, newObj interface{}) {
+	c.logger.Infof("onUpdateEtcdClus: newObj = %#v", newObj.(*api.EtcdCluster))
 	c.syncEtcdClus(newObj.(*api.EtcdCluster))
 }
 
@@ -99,6 +101,7 @@ func (c *Controller) onDeleteEtcdClus(obj interface{}) {
 			panic(fmt.Sprintf("Tombstone contained object that is not an EtcdCluster: %#v", obj))
 		}
 	}
+	c.logger.Infof("onDeleteEtcdClus: %#v", clus)
 	ev := &Event{
 		Type:   kwatch.Deleted,
 		Object: clus,
