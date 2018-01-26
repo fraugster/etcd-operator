@@ -195,13 +195,14 @@ func (c *Cluster) removeMember(toRemove *etcdutil.Member) (err error) {
 		}
 	}()
 
-	err = etcdutil.RemoveMember(c.members.ClientURLs(), c.tlsConfig, toRemove.ID)
+	clientURLs := c.members.ClientURLs()
+	err = etcdutil.RemoveMember(clientURLs, c.tlsConfig, toRemove.ID)
 	if err != nil {
 		switch err {
 		case rpctypes.ErrMemberNotFound:
 			c.logger.Infof("etcd member (%v) has been removed", toRemove.Name)
 		default:
-			return err
+			c.logger.Warningf("etcdutil.RemoveMember (%v; client URLs = %v) failed: %v", toRemove.ID, clientURLs, err)
 		}
 	}
 	c.members.Remove(toRemove.Name)
