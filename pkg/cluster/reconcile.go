@@ -92,10 +92,6 @@ func (c *Cluster) reconcileMembers(running etcdutil.MemberSet) error {
 		return c.resize()
 	}
 
-	if L.Size() < c.members.Size()/2+1 {
-		return ErrLostQuorum
-	}
-
 	c.logger.Infof("removing one dead member")
 	// remove dead members that doesn't have any running pods before doing resizing.
 	return c.removeDeadMember(c.members.Diff(L).PickOne())
